@@ -35,8 +35,20 @@ if (isset($_POST['edit'])) {
     }
 }
 
-$queryLevels = mysqli_query($koneksi, "SELECT * FROM levels ORDER BY id DESC");
-$rowLevels  = mysqli_fetch_all($queryLevels, MYSQLI_ASSOC);
+$queryCustomers = mysqli_query($koneksi, "SELECT * FROM customers ORDER BY id DESC");
+$rowCustomers  = mysqli_fetch_all($queryCustomers, MYSQLI_ASSOC);
+
+$queryServices = mysqli_query($koneksi, "SELECT * FROM services ORDER BY id DESC");
+$rowServices  = mysqli_fetch_all($queryServices, MYSQLI_ASSOC);
+
+// TR032125001
+$queryTrans = mysqli_query($koneksi, "SELECT max(id) as id_trans FROM trans_order");
+$rowTrans = mysqli_fetch_assoc($queryTrans);
+
+$id_trans = $rowTrans['id_trans']; //undifined error array key[id]
+$id_trans++;
+
+$kode_transaksi = "TR" . date("mdy") . sprintf("%03s", $id_trans);
 
 
 ?>
@@ -48,16 +60,17 @@ $rowLevels  = mysqli_fetch_all($queryLevels, MYSQLI_ASSOC);
             </div>
             <div class="card-body mt-3">
                 <form action="" method="post">
+                    <input type="hidden" id="service_price">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3 row">
                                 <div class="col-sm-3">
-                                    <label for="">Kode Transaksi</label>
+                                    <label for="">Transaction Code</label>
                                 </div>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control"
                                         name="trans_code"
-                                        readonly>
+                                        readonly value="<?php echo $kode_transaksi ?>">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -69,6 +82,20 @@ $rowLevels  = mysqli_fetch_all($queryLevels, MYSQLI_ASSOC);
                                         name="order_date">
                                 </div>
                             </div>
+                            <div class="mb-3 row">
+                                <div class="col-sm-3">
+                                    <label for="">Service</label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <select name="" id="id_service" class="form-control">
+                                        <option value="">Choose Service</option>
+                                        <?php foreach ($rowServices as $rowService): ?>
+                                            <option value="<?php echo $rowService['id'] ?>"><?php echo $rowService['service_name'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-3 row">
@@ -78,8 +105,9 @@ $rowLevels  = mysqli_fetch_all($queryLevels, MYSQLI_ASSOC);
                                 <div class="col-sm-8">
                                     <select name="id_customer" id="" class="form-control">
                                         <option value="">Choose Customer</option>
-
-                                        <option value=""></option>
+                                        <?php foreach ($rowCustomers as $rowCustomer): ?>
+                                            <option value="<?php echo $rowCustomer['id'] ?>"><?php echo $rowCustomer['customer_name'] ?></option>
+                                        <?php endforeach ?>
                                     </select>
                                 </div>
                             </div>
@@ -103,6 +131,7 @@ $rowLevels  = mysqli_fetch_all($queryLevels, MYSQLI_ASSOC);
                                 <thead>
                                     <tr>
                                         <th>Service</th>
+                                        <th>Price</th>
                                         <th>Qty</th>
                                         <th>Notes</th>
                                         <th></th>
