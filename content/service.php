@@ -1,5 +1,6 @@
 <?php
-$query = mysqli_query($koneksi, "SELECT * FROM lev ORDER BY id DESC");
+
+$query = mysqli_query($koneksi, "SELECT * FROM levels ORDER BY id DESC");
 $rows  = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 if (isset($_GET['delete'])) {
