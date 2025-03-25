@@ -119,17 +119,15 @@ include 'koneksi.php';
             let select = document.getElementById("id_service");
             let selectOpt = select.options[select.selectedIndex];
 
-            // if (selectOpt.value) {
             let price = parseInt(selectOpt.getAttribute("data-price")) || 0;
             console.log(price);
-            // }
 
             let service_name = $('#id_service').find("option:selected").text();
             let service_price = $('#service_price').val();
             let newRow = "";
             newRow += "<tr>"
             newRow += `<td>  ${currentCount}  </td>`;
-            newRow += `<td>  ${service_name} <input type='text' value='${service_name}' name='service_name'>  </td>`;
+            newRow += `<td>  ${service_name} <input type='text' value='${service_name}' name='service_name[]'>  </td>`;
             newRow += `<td>  ${service_price.toLocaleString()} <input type='text' name='subtotal[]' value='${price}' >  </td>`;
             newRow += "<td><input class='form-control' name='qty[]' type='number'></td>";
             newRow += "<td><input class='form-control' name='notes[]' type='text'></td>";

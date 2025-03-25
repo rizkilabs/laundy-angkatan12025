@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Mar 2025 pada 01.40
+-- Waktu pembuatan: 24 Mar 2025 pada 08.41
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -85,7 +85,8 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`id`, `service_name`, `service_price`, `service_desc`, `created_at`, `updated_at`) VALUES
-(1, 'Gosok', 4000, '', '2025-03-19 01:09:25', NULL);
+(2, 'Gosok', 5000, 'Hanya Gosok', '2025-03-24 02:50:31', NULL),
+(3, 'Gosok & cUCI', 4500, 'Hanya Gosok & Cuci', '2025-03-24 06:25:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -108,6 +109,13 @@ CREATE TABLE `trans_order` (
   `deleted_at` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `trans_order`
+--
+
+INSERT INTO `trans_order` (`id`, `id_customer`, `trans_code`, `order_date`, `order_end_date`, `status`, `pay`, `change_pay`, `total`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(90, 2, 'TR032425001', '2025-03-24', '2025-03-27', 1, 0, 0, 27000, '2025-03-24 06:58:22', '2025-03-24 06:58:22', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -119,11 +127,19 @@ CREATE TABLE `trans_order_detail` (
   `id_order` int(11) NOT NULL,
   `id_service` int(11) NOT NULL,
   `qty` int(11) NOT NULL,
-  `subtotal` int(11) NOT NULL,
+  `subtotal` int(11) DEFAULT NULL,
   `notes` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `trans_order_detail`
+--
+
+INSERT INTO `trans_order_detail` (`id`, `id_order`, `id_service`, `qty`, `subtotal`, `notes`, `created_at`, `updated_at`) VALUES
+(83, 90, 3, 1, 4500, '1', '2025-03-24 06:58:22', NULL),
+(84, 90, 3, 2, 4500, '2', '2025-03-24 06:58:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -210,19 +226,19 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT untuk tabel `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `trans_order`
 --
 ALTER TABLE `trans_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT untuk tabel `trans_order_detail`
 --
 ALTER TABLE `trans_order_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
